@@ -30,7 +30,6 @@ class ScreenPanel extends JPanel {
 
     void renderScreen() {
         renderSprites();
-        repaint();
     }
 
     private void renderSprites() {

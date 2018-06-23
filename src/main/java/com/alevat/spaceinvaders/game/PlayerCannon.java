@@ -7,6 +7,7 @@ class PlayerCannon implements Sprite {
 
     private static final int STARTING_X_POSITION = 20;
     private static final int Y_POSITION = 32;
+    private static final int WIDTH = 13;
 
     private final CombatState state;
     private HorizontalDirection direction = HorizontalDirection.STILL;
@@ -28,7 +29,6 @@ class PlayerCannon implements Sprite {
             default:
                 // do nothing
         }
-        System.out.println(x);
     }
 
     private void moveLeft() {
@@ -38,7 +38,7 @@ class PlayerCannon implements Sprite {
     }
 
     private void moveRight() {
-        if (x < CombatState.RIGHT_X_BOUNDARY) {
+        if (x < CombatState.RIGHT_X_BOUNDARY - WIDTH) {
             x++;
         }
     }
