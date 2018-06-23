@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 import com.alevat.spaceinvaders.game.Console;
 import com.alevat.spaceinvaders.io.InputListener;
 
-public class JavaAWTKeyListener implements KeyListener {
+class JavaAWTKeyListener implements KeyListener {
 
     private final Console console;
     private InputListener inputListener;

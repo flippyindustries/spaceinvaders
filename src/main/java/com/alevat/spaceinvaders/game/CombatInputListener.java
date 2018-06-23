@@ -1,6 +1,6 @@
 package com.alevat.spaceinvaders.game;
 
-public class CombatInputListener extends GameStateInputListenerAdapter {
+class CombatInputListener extends GameStateInputListenerAdapter {
 
     private final CombatState combatState;
 

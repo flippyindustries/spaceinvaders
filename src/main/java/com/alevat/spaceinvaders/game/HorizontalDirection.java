@@ -1,6 +1,6 @@
 package com.alevat.spaceinvaders.game;
 
-public enum HorizontalDirection {
+enum HorizontalDirection {
 
     LEFT,
     RIGHT,

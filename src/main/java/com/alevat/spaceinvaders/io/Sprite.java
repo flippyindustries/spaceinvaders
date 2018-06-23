@@ -6,12 +6,12 @@ package com.alevat.spaceinvaders.io;
 public interface Sprite {
 
     /**
-     * Returns the x position of the left-most pixel of the sprite.
+     * @return the x position of the left-most pixel of the sprite.
      */
     int getX();
 
     /**
-     * Returns the y position of the bottom-most pixel of the sprite.
+     * @return the y position of the bottom-most pixel of the sprite.
      */
     int getY();
 
