@@ -7,14 +7,14 @@ import com.alevat.spaceinvaders.io.RenderingEngine;
 public class Game {
 
     private final InputOutputResources inputOutputResources;
-    private final AudioEngine audioEngine;
     private final Console console;
+    private final AudioEngine audioEngine;
     private final RenderingEngine renderingEngine;
     private final GameInputDispatcher inputListener;
+    private final Screen screen;
 
     private boolean running;
     private GameState state;
-    private Screen screen;
 
     public Game(InputOutputResources inputOutputResources, Console console) {
         this.inputOutputResources = inputOutputResources;
@@ -22,6 +22,7 @@ public class Game {
         this.audioEngine = inputOutputResources.getAudioEngine();
         this.console = console;
         this.inputListener = new GameInputDispatcher(this);
+        this.screen = new Screen(this, renderingEngine);
     }
 
     public void start() {
@@ -33,6 +34,7 @@ public class Game {
         while (running) {
             try {
                 state.update();
+                screen.render();
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -51,5 +53,9 @@ public class Game {
 
     Console getConsole() {
         return console;
+    }
+
+    Screen getScreen() {
+        return screen;
     }
 }

@@ -1,7 +1,7 @@
 package com.alevat.spaceinvaders.game;
 
+import com.alevat.spaceinvaders.io.ImageResource;
 import com.alevat.spaceinvaders.io.Sprite;
-import com.alevat.spaceinvaders.io.SpriteIdentifier;
 
 class PlayerCannon implements Sprite {
 
@@ -21,8 +21,10 @@ class PlayerCannon implements Sprite {
         switch (direction) {
             case LEFT:
                 moveLeft();
+                break;
             case RIGHT:
                 moveRight();
+                break;
             default:
                 // do nothing
         }
@@ -30,13 +32,13 @@ class PlayerCannon implements Sprite {
     }
 
     private void moveLeft() {
-        if (x > Screen.LEFT_X_BOUNDARY) {
+        if (x > CombatState.LEFT_X_BOUNDARY) {
             x--;
         }
     }
 
     private void moveRight() {
-        if (x < Screen.RIGHT_X_BOUNDARY) {
+        if (x < CombatState.RIGHT_X_BOUNDARY) {
             x++;
         }
     }
@@ -46,6 +48,7 @@ class PlayerCannon implements Sprite {
     }
 
     void setDirection(HorizontalDirection direction) {
+        getConsole().info("PlayerCannon direction set to " + direction);
         this.direction = direction;
     }
 
@@ -60,7 +63,11 @@ class PlayerCannon implements Sprite {
     }
 
     @Override
-    public SpriteIdentifier getIdentifier() {
-        return SpriteIdentifier.PLAYER_CANNON;
+    public ImageResource getImageResource() {
+        return ImageResource.PLAYER_CANNON;
+    }
+
+    private Console getConsole() {
+        return state.getConsole();
     }
 }

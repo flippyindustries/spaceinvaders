@@ -1,11 +1,26 @@
 package com.alevat.spaceinvaders.game;
 
+import com.alevat.spaceinvaders.io.RenderingEngine;
+import com.alevat.spaceinvaders.io.Sprite;
+
 public class Screen {
 
     public static final int WIDTH = 224;
     public static final int HEIGHT = 256;
 
-    public static final int LEFT_X_BOUNDARY = 0;
-    public static final int RIGHT_X_BOUNDARY = WIDTH;
+    private final Game game;
+    private final RenderingEngine renderingEngine;
 
+    Screen(Game game, RenderingEngine renderingEngine) {
+        this.game = game;
+        this.renderingEngine = renderingEngine;
+    }
+
+    void addSprite(Sprite sprite) {
+        renderingEngine.addSprite(sprite);
+    }
+
+    void render() {
+        renderingEngine.renderScreen();
+    }
 }

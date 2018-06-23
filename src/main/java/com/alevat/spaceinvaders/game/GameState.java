@@ -4,11 +4,11 @@ import com.alevat.spaceinvaders.io.InputListener;
 
 interface GameState {
 
-    InputListener getInputListener();
+    void update();
 
     Game getGame();
 
-    void update();
+    InputListener getInputListener();
 
     Console getConsole();
 }

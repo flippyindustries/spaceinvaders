@@ -17,4 +17,8 @@ abstract class AbstractGameState implements GameState {
     public Console getConsole() {
         return game.getConsole();
     }
+
+    Screen getScreen() {
+        return getGame().getScreen();
+    }
 }

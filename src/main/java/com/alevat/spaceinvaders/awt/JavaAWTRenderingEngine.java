@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import com.alevat.spaceinvaders.game.Console;
 import com.alevat.spaceinvaders.io.RenderingEngine;
+import com.alevat.spaceinvaders.io.Sprite;
 
 class JavaAWTRenderingEngine implements RenderingEngine {
 
@@ -21,6 +22,21 @@ class JavaAWTRenderingEngine implements RenderingEngine {
         initializeJFrame();
         initializeScreenPanel();
         displayScreen();
+    }
+
+    @Override
+    public void addSprite(Sprite sprite) {
+        screenPanel.addSprite(sprite);
+    }
+
+    @Override
+    public void removeSprite(Sprite sprite) {
+        screenPanel.removeSprite(sprite);
+    }
+
+    @Override
+    public void renderScreen() {
+        screenPanel.renderScreen();
     }
 
     private void displayScreen() {

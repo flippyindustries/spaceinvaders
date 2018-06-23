@@ -7,7 +7,11 @@ import com.alevat.spaceinvaders.io.InputOutputResources;
 public class JavaAWTGameStarter {
 
     public void start(Console console) {
-        InputOutputResources inputOutputResources = new JavaInputOutputResources(console);
-        new Game(inputOutputResources, console).start();
+        try {
+            InputOutputResources inputOutputResources = new JavaInputOutputResources(console);
+            new Game(inputOutputResources, console).start();
+        } catch (RuntimeException e) {
+            console.error("Unexpected RuntimeException", e);
+        }
     }
 }

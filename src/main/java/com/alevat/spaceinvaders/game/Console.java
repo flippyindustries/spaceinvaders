@@ -6,4 +6,8 @@ public class Console {
         System.out.println(message);
     }
 
+    public void error(String message, Throwable throwable) {
+        System.err.println(message);
+        throwable.printStackTrace();
+    }
 }

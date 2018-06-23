@@ -15,6 +15,6 @@ public interface Sprite {
      */
     int getY();
 
-    SpriteIdentifier getIdentifier();
+    ImageResource getImageResource();
 
 }
