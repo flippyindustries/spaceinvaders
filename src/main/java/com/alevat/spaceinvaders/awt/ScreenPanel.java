@@ -29,20 +29,27 @@ class ScreenPanel extends JPanel {
     }
 
     void renderScreen() {
-        renderSprites();
+        repaint();
     }
 
-    private void renderSprites() {
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D graphics2D = (Graphics2D) g;
+        renderSprites(graphics2D);
+    }
+
+    private void renderSprites(Graphics2D graphics2D) {
         for (Sprite sprite : sprites) {
-            renderSprite(sprite);
+            renderSprite(sprite, graphics2D);
         }
     }
 
-    private void renderSprite(Sprite sprite) {
+    private void renderSprite(Sprite sprite, Graphics2D graphics2D) {
         BufferedImage bufferedImage = sprite.getImageResource().getBufferedImage();
         int x = getX(sprite);
         int y = getY(sprite);
-        getGraphics2D().drawImage(bufferedImage, x, y, null);
+        graphics2D.drawImage(bufferedImage, x, y, null);
     }
 
     private int getX(Sprite sprite) {
@@ -53,11 +60,4 @@ class ScreenPanel extends JPanel {
         return Screen.HEIGHT - sprite.getY();
     }
 
-    private BufferedImage getBufferedImage(Sprite sprite) {
-        return null;
-    }
-
-    private Graphics2D getGraphics2D() {
-        return (Graphics2D) getGraphics();
-    }
 }
