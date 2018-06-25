@@ -9,12 +9,15 @@ import javax.swing.*;
 import com.alevat.spaceinvaders.game.Screen;
 import com.alevat.spaceinvaders.io.Sprite;
 
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
+
 class ScreenPanel extends JPanel {
 
+    private final BufferedImage screenImage = new BufferedImage(Screen.WIDTH, Screen.HEIGHT, TYPE_INT_RGB);
+    private final Graphics2D graphics2D = (Graphics2D) screenImage.getGraphics();
     private final Set<Sprite> sprites = new HashSet<>();
 
     void initialize() {
-        setBackground(Color.BLACK);
         setPreferredSize(new Dimension(Screen.WIDTH, Screen.HEIGHT));
         setFocusable(true);
         requestFocus();
@@ -29,14 +32,20 @@ class ScreenPanel extends JPanel {
     }
 
     void renderScreen() {
+        renderScreenImage();
         repaint();
+    }
+
+    private void renderScreenImage() {
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.fillRect(0, 0, Screen.WIDTH, Screen.HEIGHT);
+        renderSprites(graphics2D);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D graphics2D = (Graphics2D) g;
-        renderSprites(graphics2D);
+        g.drawImage(screenImage, 0, 0, null);
     }
 
     private void renderSprites(Graphics2D graphics2D) {
