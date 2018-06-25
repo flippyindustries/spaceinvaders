@@ -5,6 +5,7 @@ import com.alevat.spaceinvaders.io.Sprite;
 
 class PlayerCannon implements Sprite {
 
+    private static final double VELOCITY_PIXELS_PER_FRAME = 1.5;
     private static final int STARTING_X_POSITION = 20;
     private static final int Y_POSITION = 32;
     private static final int WIDTH = 13;
@@ -12,7 +13,7 @@ class PlayerCannon implements Sprite {
     private final CombatState state;
     private HorizontalDirection direction = HorizontalDirection.STILL;
 
-    int x = STARTING_X_POSITION;
+    double x = STARTING_X_POSITION;
 
     PlayerCannon(CombatState state) {
         this.state = state;
@@ -33,13 +34,13 @@ class PlayerCannon implements Sprite {
 
     private void moveLeft() {
         if (x > CombatState.LEFT_X_BOUNDARY) {
-            x--;
+            x = x - VELOCITY_PIXELS_PER_FRAME;
         }
     }
 
     private void moveRight() {
         if (x < CombatState.RIGHT_X_BOUNDARY - WIDTH) {
-            x++;
+            x = x + VELOCITY_PIXELS_PER_FRAME;
         }
     }
 
@@ -54,7 +55,7 @@ class PlayerCannon implements Sprite {
 
     @Override
     public int getX() {
-        return x;
+        return (int) Math.round(x);
     }
 
     @Override
