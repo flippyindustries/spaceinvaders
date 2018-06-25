@@ -12,22 +12,37 @@ class CombatInputListener extends GameStateInputListenerAdapter {
 
     @Override
     public void leftPressed() {
-        combatState.getPlayerCannon().setDirection(HorizontalDirection.LEFT);
+        leftPressed = true;
+        setPlayerCannonDirection();
     }
 
     @Override
     public void leftReleased() {
-        combatState.getPlayerCannon().setDirection(HorizontalDirection.STILL);
+        leftPressed = false;
+        setPlayerCannonDirection();
     }
 
     @Override
     public void rightPressed() {
-        combatState.getPlayerCannon().setDirection(HorizontalDirection.RIGHT);
+        rightPressed = true;
+        setPlayerCannonDirection();
     }
 
     @Override
     public void rightReleased() {
-        combatState.getPlayerCannon().setDirection(HorizontalDirection.STILL);
+        rightPressed = false;
+        setPlayerCannonDirection();
+    }
+
+    private void setPlayerCannonDirection() {
+        HorizontalDirection direction = HorizontalDirection.STILL;
+        if (leftPressed && !rightPressed) {
+            direction = HorizontalDirection.LEFT;
+        }
+        if (rightPressed && !leftPressed) {
+            direction = HorizontalDirection.RIGHT;
+        }
+        combatState.getPlayerCannon().setDirection(direction);
     }
 
     @Override
