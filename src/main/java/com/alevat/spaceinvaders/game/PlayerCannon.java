@@ -1,14 +1,18 @@
 package com.alevat.spaceinvaders.game;
 
+import com.alevat.spaceinvaders.io.AudioEngine;
 import com.alevat.spaceinvaders.io.ImageResource;
+import com.alevat.spaceinvaders.io.SoundResource;
 import com.alevat.spaceinvaders.io.Sprite;
 
 class PlayerCannon implements Sprite {
 
-    private static final double VELOCITY_PIXELS_PER_FRAME = 1.5;
+    private static final double VELOCITY_PIXELS_PER_FRAME = 1.0;
     private static final int STARTING_X_POSITION = 20;
-    private static final int Y_POSITION = 32;
-    private static final int WIDTH = 13;
+    static final int Y_POSITION = 32;
+    static final int WIDTH = 13;
+    static final int HEIGHT = 8;
+    static final int BARREL_X_OFFSET = 7;
 
     private final CombatState state;
     private HorizontalDirection direction = HorizontalDirection.STILL;
@@ -34,13 +38,13 @@ class PlayerCannon implements Sprite {
 
     private void moveLeft() {
         if (x > CombatState.LEFT_X_BOUNDARY) {
-            x = x - VELOCITY_PIXELS_PER_FRAME;
+            x -= VELOCITY_PIXELS_PER_FRAME;
         }
     }
 
     private void moveRight() {
         if (x < CombatState.RIGHT_X_BOUNDARY - WIDTH) {
-            x = x + VELOCITY_PIXELS_PER_FRAME;
+            x += VELOCITY_PIXELS_PER_FRAME;
         }
     }
 
@@ -51,6 +55,13 @@ class PlayerCannon implements Sprite {
     void setDirection(HorizontalDirection direction) {
         getConsole().info("PlayerCannon direction set to " + direction);
         this.direction = direction;
+    }
+
+    void fire() {
+        if (state.getPlayerShot() == null) {
+            state.setPlayerShot(new PlayerShot(state, this));
+            getAudioEngine().play(SoundResource.FIRE_SHOT);
+        }
     }
 
     @Override
@@ -71,4 +82,9 @@ class PlayerCannon implements Sprite {
     private Console getConsole() {
         return state.getConsole();
     }
+
+    private AudioEngine getAudioEngine() {
+        return state.getGame().getIOResources().getAudioEngine();
+    }
+
 }

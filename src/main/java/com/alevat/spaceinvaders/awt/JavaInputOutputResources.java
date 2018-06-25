@@ -10,16 +10,18 @@ class JavaInputOutputResources implements InputOutputResources {
 
     private final Console console;
 
-    private JavaAWTRenderingEngine renderingEngine;
+    private final JavaAWTRenderingEngine renderingEngine;
+    private final JavaAudioEngine audioEngine;
 
-    public JavaInputOutputResources(Console console) {
+    JavaInputOutputResources(Console console) {
         this.console = console;
         renderingEngine = new JavaAWTRenderingEngine(console);
+        audioEngine = new JavaAudioEngine(console);
     }
 
     @Override
     public AudioEngine getAudioEngine() {
-        return null;
+        return audioEngine;
     }
 
     @Override

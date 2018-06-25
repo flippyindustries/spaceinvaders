@@ -16,6 +16,10 @@ public class Screen {
         this.renderingEngine = renderingEngine;
     }
 
+    void removeSprite(Sprite sprite) {
+        renderingEngine.removeSprite(sprite);
+    }
+
     void addSprite(Sprite sprite) {
         renderingEngine.addSprite(sprite);
     }
@@ -23,4 +27,5 @@ public class Screen {
     void render() {
         renderingEngine.renderScreen();
     }
+
 }
