@@ -3,6 +3,8 @@ package com.alevat.spaceinvaders.game;
 class CombatInputListener extends GameStateInputListenerAdapter {
 
     private final CombatState combatState;
+    private boolean leftPressed;
+    private boolean rightPressed;
 
     CombatInputListener(CombatState combatState) {
         this.combatState = combatState;
