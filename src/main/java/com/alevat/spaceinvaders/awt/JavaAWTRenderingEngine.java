@@ -24,6 +24,24 @@ class JavaAWTRenderingEngine implements RenderingEngine {
         displayScreen();
     }
 
+    private void initializeJFrame() {
+        jFrame = new JFrame();
+        jFrame.setUndecorated(true);
+        jFrame.setResizable(false);
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    private void initializeScreenPanel() {
+        screenPanel = new ScreenPanel();
+        screenPanel.initialize();
+    }
+
+    private void displayScreen() {
+        jFrame.setContentPane(screenPanel);
+        jFrame.pack();
+        jFrame.setVisible(true);
+    }
+
     @Override
     public void addSprite(Sprite sprite) {
         screenPanel.addSprite(sprite);
@@ -37,24 +55,6 @@ class JavaAWTRenderingEngine implements RenderingEngine {
     @Override
     public void renderScreen() {
         screenPanel.renderScreen();
-    }
-
-    private void displayScreen() {
-        jFrame.setContentPane(screenPanel);
-        jFrame.pack();
-        jFrame.setVisible(true);
-    }
-
-    private void initializeJFrame() {
-        jFrame = new JFrame();
-        jFrame.setUndecorated(true);
-        jFrame.setResizable(false);
-        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    }
-
-    private void initializeScreenPanel() {
-        screenPanel = new ScreenPanel();
-        screenPanel.initialize();
     }
 
     void registerKeyListener(JavaAWTKeyListener keyListener) {
