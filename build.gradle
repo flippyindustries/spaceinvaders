@@ -1,8 +1,11 @@
 apply plugin: 'java'
+apply plugin: 'application'
 
 repositories {
     jcenter()
 }
+
+mainClassName = 'com.alevat.spaceinvaders.Main'
 
 dependencies {
 
