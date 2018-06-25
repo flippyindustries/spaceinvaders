@@ -4,8 +4,8 @@ import com.alevat.spaceinvaders.io.InputListener;
 
 class CombatState extends AbstractGameState {
 
-    public static final int LEFT_X_BOUNDARY = 0;
-    public static final int RIGHT_X_BOUNDARY = Screen.WIDTH;
+    public static final int LEFT_X_BOUNDARY = 20;
+    public static final int RIGHT_X_BOUNDARY = Screen.WIDTH - 20;
 
     private PlayerCannon playerCannon = new PlayerCannon(this);
 
