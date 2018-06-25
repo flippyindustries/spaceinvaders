@@ -12,7 +12,7 @@ class PlayerCannon implements Sprite {
     static final int Y_POSITION = 32;
     static final int WIDTH = 13;
     static final int HEIGHT = 8;
-    static final int BARREL_X_OFFSET = 7;
+    static final int BARREL_X_OFFSET = 6;
 
     private final CombatState state;
     private HorizontalDirection direction = HorizontalDirection.STILL;

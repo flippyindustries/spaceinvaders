@@ -6,10 +6,12 @@ import com.alevat.spaceinvaders.io.Sprite;
 class PlayerShot implements Sprite {
 
     private static final double VELOCITY_PIXELS_PER_FRAME = 4;
+    private final static double STARTING_Y_POSITION =
+            PlayerCannon.Y_POSITION + PlayerCannon.HEIGHT - VELOCITY_PIXELS_PER_FRAME;
 
     private final CombatState state;
     private final int x;
-    private double y = PlayerCannon.Y_POSITION + PlayerCannon.HEIGHT - VELOCITY_PIXELS_PER_FRAME;
+    private double y = STARTING_Y_POSITION;
 
     PlayerShot(CombatState state, PlayerCannon cannon) {
         this.state = state;
