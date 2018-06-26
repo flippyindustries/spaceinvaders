@@ -11,10 +11,10 @@ class PlayerShot implements Sprite {
     private static final double VELOCITY_PIXELS_PER_FRAME = 4;
     private static final double STARTING_Y_POSITION =
             PlayerCannon.Y_POSITION + PlayerCannon.HEIGHT - VELOCITY_PIXELS_PER_FRAME;
-    private static final int MISSED_SHOT_EXPLOSION_FRAMES = 15;
+    private static final int MISSED_SHOT_EXPLOSION_FRAMES = 8;
 
     private final CombatState combatState;
-    private final int x;
+    private int x;
     private double y = STARTING_Y_POSITION;
     private PlayerShotState shotState = IN_FLIGHT;
     private int missedShotExplosionFrameCount = 0;
@@ -49,6 +49,7 @@ class PlayerShot implements Sprite {
             y += VELOCITY_PIXELS_PER_FRAME;
             if (y >= CombatState.TOP_Y_BOUNDARY) {
                 shotState = MISSED;
+                x = (int) (x - (ImageResource.PLAYER_SHOT_EXPLODING.getBufferedImage().getWidth() / 2.0));
             }
         } else if (shotState == MISSED
                 && missedShotExplosionFrameCount++ == MISSED_SHOT_EXPLOSION_FRAMES)
