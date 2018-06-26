@@ -8,7 +8,8 @@ import javax.imageio.ImageIO;
 public enum ImageResource {
 
     PLAYER_CANNON("player_cannon.png"),
-    PLAYER_SHOT("player_shot.png");
+    PLAYER_SHOT("player_shot.png"),
+    PLAYER_SHOT_EXPLODING("player_shot_exploding.png");
 
     private final BufferedImage bufferedImage;
 

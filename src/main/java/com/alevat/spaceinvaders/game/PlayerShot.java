@@ -3,20 +3,26 @@ package com.alevat.spaceinvaders.game;
 import com.alevat.spaceinvaders.io.ImageResource;
 import com.alevat.spaceinvaders.io.Sprite;
 
+import static com.alevat.spaceinvaders.game.PlayerShotState.IN_FLIGHT;
+import static com.alevat.spaceinvaders.game.PlayerShotState.MISSED;
+
 class PlayerShot implements Sprite {
 
     private static final double VELOCITY_PIXELS_PER_FRAME = 4;
-    private final static double STARTING_Y_POSITION =
+    private static final double STARTING_Y_POSITION =
             PlayerCannon.Y_POSITION + PlayerCannon.HEIGHT - VELOCITY_PIXELS_PER_FRAME;
+    private static final int MISSED_SHOT_EXPLOSION_FRAMES = 15;
 
-    private final CombatState state;
+    private final CombatState combatState;
     private final int x;
     private double y = STARTING_Y_POSITION;
+    private PlayerShotState shotState = IN_FLIGHT;
+    private int missedShotExplosionFrameCount = 0;
 
-    PlayerShot(CombatState state, PlayerCannon cannon) {
-        this.state = state;
+    PlayerShot(CombatState combatState, PlayerCannon cannon) {
+        this.combatState = combatState;
         this.x = cannon.getX() + PlayerCannon.BARREL_X_OFFSET;
-        state.getScreen().addSprite(this);
+        combatState.getScreen().addSprite(this);
     }
 
     @Override
@@ -31,14 +37,24 @@ class PlayerShot implements Sprite {
 
     @Override
     public ImageResource getImageResource() {
-        return ImageResource.PLAYER_SHOT;
+        if (shotState == IN_FLIGHT) {
+            return ImageResource.PLAYER_SHOT;
+        } else {
+            return ImageResource.PLAYER_SHOT_EXPLODING;
+        }
     }
 
     void update() {
-        y += VELOCITY_PIXELS_PER_FRAME;
-        if (y >= Screen.HEIGHT) {
-            state.getScreen().removeSprite(this);
-            state.setPlayerShot(null);
+        if (shotState == IN_FLIGHT) {
+            y += VELOCITY_PIXELS_PER_FRAME;
+            if (y >= CombatState.TOP_Y_BOUNDARY) {
+                shotState = MISSED;
+            }
+        } else if (shotState == MISSED
+                && missedShotExplosionFrameCount++ == MISSED_SHOT_EXPLOSION_FRAMES)
+        {
+            combatState.getScreen().removeSprite(this);
+            combatState.setPlayerShot(null);
         }
     }
 

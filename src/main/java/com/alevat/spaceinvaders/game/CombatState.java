@@ -7,6 +7,8 @@ class CombatState extends AbstractGameState {
     public static final int LEFT_X_BOUNDARY = 20;
     public static final int RIGHT_X_BOUNDARY = Screen.WIDTH - 20;
 
+    public static final int TOP_Y_BOUNDARY = Screen.HEIGHT - 34;
+
     private PlayerCannon playerCannon = new PlayerCannon(this);
     private PlayerShot playerShot;
 
