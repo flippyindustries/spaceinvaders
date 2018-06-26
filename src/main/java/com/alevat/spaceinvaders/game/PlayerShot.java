@@ -11,7 +11,7 @@ class PlayerShot implements Sprite {
     private static final double VELOCITY_PIXELS_PER_FRAME = 4;
     private static final double STARTING_Y_POSITION =
             PlayerCannon.Y_POSITION + PlayerCannon.HEIGHT - VELOCITY_PIXELS_PER_FRAME;
-    private static final int MISSED_SHOT_EXPLOSION_FRAMES = 8;
+    private static final int MISSED_SHOT_EXPLOSION_FRAMES = 10;
 
     private final CombatState combatState;
     private int x;
