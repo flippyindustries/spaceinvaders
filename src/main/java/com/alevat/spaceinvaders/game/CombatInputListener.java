@@ -34,6 +34,11 @@ class CombatInputListener extends GameStateInputListenerAdapter {
         setPlayerCannonDirection();
     }
 
+    @Override
+    public void firePressed() {
+        combatState.getPlayerCannon().fire();
+    }
+
     private void setPlayerCannonDirection() {
         HorizontalDirection direction = HorizontalDirection.STILL;
         if (leftPressed && !rightPressed) {
