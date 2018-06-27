@@ -10,8 +10,8 @@ class PlayerCannon implements Sprite {
     private static final double VELOCITY_PIXELS_PER_FRAME = 1.0;
     private static final int STARTING_X_POSITION = 20;
     static final int Y_POSITION = 32;
-    static final int WIDTH = 13;
-    static final int HEIGHT = 8;
+    static final int WIDTH = ImageResource.PLAYER_CANNON.getBufferedImage().getWidth();
+    static final int HEIGHT = ImageResource.PLAYER_CANNON.getBufferedImage().getHeight();
     static final int BARREL_X_OFFSET = 6;
 
     private final CombatState state;
