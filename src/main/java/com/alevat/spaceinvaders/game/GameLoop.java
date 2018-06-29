@@ -49,7 +49,10 @@ class GameLoop implements Runnable {
     private double getAverageFPS() {
         final long currentTimeNanos = nanoTime();
         final long durationNanos = currentTimeNanos - startTimeNanos;
-        return (double) frameCount / TimeUnit.NANOSECONDS.toSeconds(durationNanos);
+        double averageFPS = (double) frameCount / TimeUnit.NANOSECONDS.toSeconds(durationNanos);
+        frameCount = 0;
+        startTimeNanos = nanoTime();
+        return averageFPS;
     }
 
     private void update() {

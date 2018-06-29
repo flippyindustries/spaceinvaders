@@ -1,37 +1,31 @@
 package com.alevat.spaceinvaders.awt;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import javax.swing.*;
 
 import com.alevat.spaceinvaders.game.Console;
 import com.alevat.spaceinvaders.game.Screen;
-import com.alevat.spaceinvaders.io.ImageResource;
 import com.alevat.spaceinvaders.io.RenderingEngine;
 import com.alevat.spaceinvaders.io.Sprite;
 
-import static java.awt.Image.SCALE_SMOOTH;
-
 class JavaAWTRenderingEngine implements RenderingEngine {
 
-    private static final int DISPLAY_MODE_HEIGHT = 300;
     private static final int DISPLAY_MODE_WIDTH = 400;
-    private final static int SCREEN_SIZE_MULTIPLIER = 4;
+    private static final int DISPLAY_MODE_HEIGHT = 300;
+    public static final int CENTERING_OFFSET_Y = (DISPLAY_MODE_HEIGHT - Screen.HEIGHT) / 2;
+    public static final int CENTERING_OFFSET_X = (DISPLAY_MODE_WIDTH - Screen.WIDTH) / 2;
 
     private final Console console;
     private GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
     private GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
-    private Frame frame;
+    private Frame window;
+
     private final Set<Sprite> sprites = new HashSet<>();
-    private final Map<ImageResource, BufferedImage> resizedImageMap = new HashMap<>();
     private BufferStrategy bufferStrategy;
-    private Rectangle frameBounds;
+    private Rectangle windowBounds;
 
     JavaAWTRenderingEngine(Console console) {
         this.console = console;
@@ -39,35 +33,47 @@ class JavaAWTRenderingEngine implements RenderingEngine {
 
     @Override
     public void initializeScreen() {
-        initializeFrame();
-        displayScreen();
-    }
-
-    private void initializeFrame() {
-        frame = new Frame(graphicsDevice.getDefaultConfiguration());
-        frame.setUndecorated(true);
-        frame.setIgnoreRepaint(true);
-    }
-
-    private void displayScreen() {
-        frame.requestFocus();
-        graphicsDevice.setFullScreenWindow(frame);
+        window = new Frame(graphicsDevice.getDefaultConfiguration());
+        window.setUndecorated(true);
+        window.setIgnoreRepaint(true);
+        window.requestFocus();
+        if (graphicsDevice.isFullScreenSupported()) {
+            console.info("Setting to Full screen exclusive");
+            graphicsDevice.setFullScreenWindow(window);
+        } else {
+            console.info("Full screen exclusive unavailable");
+        }
         if (graphicsDevice.isDisplayChangeSupported()) {
             selectDisplayMode();
         }
-        frameBounds = frame.getBounds();
-        frame.createBufferStrategy(2);
-        bufferStrategy = frame.getBufferStrategy();
+        console.info("Current mode " + getDisplayModeDescription(graphicsDevice.getDisplayMode()));
+        windowBounds = window.getBounds();
+        window.createBufferStrategy(3);
+        bufferStrategy = window.getBufferStrategy();
     }
 
     private void selectDisplayMode() {
-        for (DisplayMode mode : graphicsDevice.getDisplayModes()) {
-            if (mode.getHeight() == DISPLAY_MODE_HEIGHT && mode.getWidth() == DISPLAY_MODE_WIDTH) {
+        DisplayMode[] displayModes = graphicsDevice.getDisplayModes();
+        for (DisplayMode mode : displayModes) {
+            if (isRequiredDisplayMode(mode)) {
+                console.info("Changed to mode " + getDisplayModeDescription(mode));
                 graphicsDevice.setDisplayMode(mode);
+                return;
             }
-            return;
         }
         throw new IllegalStateException("Couldn't find required display mode");
+    }
+
+    private boolean isRequiredDisplayMode(DisplayMode mode) {
+        return mode.getHeight() == DISPLAY_MODE_HEIGHT
+                && mode.getWidth() == DISPLAY_MODE_WIDTH;
+    }
+
+    private String getDisplayModeDescription(DisplayMode displayMode) {
+        return displayMode.getWidth() + " x "
+                + displayMode.getHeight() + ", "
+                + displayMode.getBitDepth() + " bits, "
+                + displayMode.getRefreshRate() + " Hz";
     }
 
     @Override
@@ -86,7 +92,7 @@ class JavaAWTRenderingEngine implements RenderingEngine {
             do {
                 Graphics graphics = bufferStrategy.getDrawGraphics();
                 graphics.setColor(Color.black);
-                graphics.fillRect(0, 0, (int) frameBounds.getWidth(), (int) frameBounds.getHeight());
+                graphics.fillRect(0, 0, (int) windowBounds.getWidth(), (int) windowBounds.getHeight());
                 renderScreenImage(graphics);
                 graphics.dispose();
             } while (bufferStrategy.contentsRestored());
@@ -106,85 +112,30 @@ class JavaAWTRenderingEngine implements RenderingEngine {
 
     private void renderSprite(Sprite sprite, Graphics graphics) {
         BufferedImage bufferedImage = getBufferedImage(sprite);
-        int x = getX(sprite);
-        int y = getY(sprite);
+        int x = getActualX(sprite);
+        int y = getActualY(sprite);
         graphics.drawImage(bufferedImage, x, y, null);
     }
 
     private BufferedImage getBufferedImage(Sprite sprite) {
-        ImageResource imageResource = sprite.getImageResource();
-        BufferedImage resizedImage = resizedImageMap.get(imageResource);
-        if (resizedImage == null) {
-            resizedImage = getResizedBufferedImage(imageResource);
-            resizedImageMap.put(imageResource, resizedImage);
-        }
-        return resizedImage;
+        return sprite.getImageResource().getBufferedImage();
     }
 
-    private BufferedImage getResizedBufferedImage(ImageResource imageResource) {
-        BufferedImage originalImage = imageResource.getBufferedImage();
-        int desiredWidth = SCREEN_SIZE_MULTIPLIER * originalImage.getWidth();
-        int desiredHeight = SCREEN_SIZE_MULTIPLIER * originalImage.getHeight();
-        Image tempResizedImage = originalImage.getScaledInstance(desiredWidth, desiredHeight, SCALE_SMOOTH);
-        BufferedImage resizedImage = new BufferedImage(desiredWidth, desiredHeight, BufferedImage.TYPE_INT_RGB);
-        Graphics graphics = resizedImage.getGraphics();
-        graphics.drawImage(tempResizedImage, 0, 0, null);
-        return resizedImage;
+
+    private int getActualX(Sprite sprite) {
+        return sprite.getX() + CENTERING_OFFSET_X;
     }
 
-    private int getX(Sprite sprite) {
-        return sprite.getX() * SCREEN_SIZE_MULTIPLIER;
-    }
-
-    private int getY(Sprite sprite) {
-        return (Screen.HEIGHT - sprite.getY()) * SCREEN_SIZE_MULTIPLIER;
+    private int getActualY(Sprite sprite) {
+        return (int) (windowBounds.getHeight() - sprite.getY()) - CENTERING_OFFSET_Y;
     }
     void registerKeyListener(JavaAWTKeyListener keyListener) {
-        frame.addKeyListener(keyListener);
+        window.addKeyListener(keyListener);
     }
 
     void close() {
-        frame.setVisible(false);
-        frame.dispose();
+        window.setVisible(false);
+        window.dispose();
     }
-
-//    // Create a general double-buffering strategy
-// w.createBufferStrategy(2);
-//    BufferStrategy strategy = w.getBufferStrategy();
-//
-//    // Main loop
-// while (!done) {
-//        // Prepare for rendering the next frame
-//        // ...
-//
-//        // Render single frame
-//        do {
-//            // The following loop ensures that the contents of the drawing buffer
-//            // are consistent in case the underlying surface was recreated
-//            do {
-//                // Get a new graphics context every time through the loop
-//                // to make sure the strategy is validated
-//                Graphics graphics = strategy.getDrawGraphics();
-//
-//                // Render to graphics
-//                // ...
-//
-//                // Dispose the graphics
-//                graphics.dispose();
-//
-//                // Repeat the rendering if the drawing buffer contents
-//                // were restored
-//            } while (strategy.contentsRestored());
-//
-//            // Display the buffer
-//            strategy.show();
-//
-//            // Repeat the rendering if the drawing buffer was lost
-//        } while (strategy.contentsLost());
-//    }
-//
-//    // Dispose the window
-// w.setVisible(false);
-// w.dispose();
 
 }
