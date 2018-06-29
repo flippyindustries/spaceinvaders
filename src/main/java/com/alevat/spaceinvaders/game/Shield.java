@@ -6,7 +6,7 @@ import com.alevat.spaceinvaders.io.Sprite;
 class Shield implements Sprite {
 
     static final int Y_POSITION = 56;
-    static final int WIDTH = ImageResource.SHIELD.getBufferedImage().getWidth();
+    static final int WIDTH = ImageResource.SHIELD.getWidth();
 
     private final CombatState state;
     private final int x;

@@ -30,4 +30,12 @@ public enum ImageResource {
     public BufferedImage getBufferedImage() {
         return bufferedImage;
     }
+
+    public int getWidth() {
+        return getBufferedImage().getWidth();
+    }
+
+    public int getHeight() {
+        return getBufferedImage().getHeight();
+    }
 }

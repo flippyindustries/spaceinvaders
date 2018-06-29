@@ -40,14 +40,14 @@ class ScreenPanel extends JPanel {
     }
 
     void renderScreen() {
-        renderScreenImage();
+        renderScreenImage(graphics2D);
         repaint();
     }
 
-    private void renderScreenImage() {
-        graphics2D.setColor(Color.BLACK);
-        graphics2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
-        renderSprites(graphics2D);
+    void renderScreenImage(Graphics graphics) {
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+        renderSprites(graphics);
     }
 
     @Override
@@ -56,7 +56,7 @@ class ScreenPanel extends JPanel {
         g.drawImage(screenImage, 0, 0, null);
     }
 
-    private void renderSprites(Graphics2D graphics2D) {
+    private void renderSprites(Graphics graphics) {
         for (Sprite sprite : sprites) {
             renderSprite(sprite, graphics2D);
         }

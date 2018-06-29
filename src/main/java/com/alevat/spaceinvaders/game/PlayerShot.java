@@ -49,7 +49,7 @@ class PlayerShot implements Sprite {
             y += VELOCITY_PIXELS_PER_FRAME;
             if (y >= CombatState.TOP_Y_BOUNDARY) {
                 shotState = MISSED;
-                x = (int) (x - (ImageResource.PLAYER_SHOT_EXPLODING.getBufferedImage().getWidth() / 2.0));
+                x = (int) (x - (ImageResource.PLAYER_SHOT_EXPLODING.getWidth() / 2.0));
             }
         } else if (shotState == MISSED
                 && missedShotExplosionFrameCount++ == MISSED_SHOT_EXPLOSION_FRAMES)
