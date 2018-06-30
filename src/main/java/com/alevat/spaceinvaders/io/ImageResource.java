@@ -1,6 +1,8 @@
 package com.alevat.spaceinvaders.io;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
@@ -29,6 +31,14 @@ public enum ImageResource {
 
     public BufferedImage getBufferedImage() {
         return bufferedImage;
+    }
+
+    public BufferedImage copyBufferedImage() {
+        ColorModel cm = getBufferedImage().getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = getBufferedImage().copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null)
+                .getSubimage(0, 0, getBufferedImage().getWidth(), getBufferedImage().getHeight());
     }
 
     public int getWidth() {

@@ -111,16 +111,11 @@ class JavaAWTRenderingEngine implements RenderingEngine {
     }
 
     private void renderSprite(Sprite sprite, Graphics graphics) {
-        BufferedImage bufferedImage = getBufferedImage(sprite);
+        BufferedImage bufferedImage = sprite.getBufferedImage();
         int x = getActualX(sprite);
         int y = getActualY(sprite);
         graphics.drawImage(bufferedImage, x, y, null);
     }
-
-    private BufferedImage getBufferedImage(Sprite sprite) {
-        return sprite.getImageResource().getBufferedImage();
-    }
-
 
     private int getActualX(Sprite sprite) {
         return sprite.getX() + CENTERING_OFFSET_X;

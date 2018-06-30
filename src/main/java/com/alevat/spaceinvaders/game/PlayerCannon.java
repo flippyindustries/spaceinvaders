@@ -1,5 +1,7 @@
 package com.alevat.spaceinvaders.game;
 
+import java.awt.image.BufferedImage;
+
 import com.alevat.spaceinvaders.io.AudioEngine;
 import com.alevat.spaceinvaders.io.ImageResource;
 import com.alevat.spaceinvaders.io.SoundResource;
@@ -13,6 +15,7 @@ class PlayerCannon implements Sprite {
     static final int WIDTH = ImageResource.PLAYER_CANNON.getWidth();
     static final int HEIGHT = ImageResource.PLAYER_CANNON.getHeight();
     static final int BARREL_X_OFFSET = 6;
+    public static final BufferedImage CANNON_IMAGE = ImageResource.PLAYER_CANNON.getBufferedImage();
 
     private final CombatState state;
     private HorizontalDirection direction = HorizontalDirection.STILL;
@@ -75,8 +78,8 @@ class PlayerCannon implements Sprite {
     }
 
     @Override
-    public ImageResource getImageResource() {
-        return ImageResource.PLAYER_CANNON;
+    public BufferedImage getBufferedImage() {
+        return CANNON_IMAGE;
     }
 
     private Console getConsole() {

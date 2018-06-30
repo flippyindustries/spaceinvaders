@@ -1,5 +1,7 @@
 package com.alevat.spaceinvaders.game;
 
+import java.awt.image.BufferedImage;
+
 import com.alevat.spaceinvaders.io.ImageResource;
 import com.alevat.spaceinvaders.io.Sprite;
 
@@ -12,6 +14,8 @@ class PlayerShot implements Sprite {
     private static final double STARTING_Y_POSITION =
             PlayerCannon.Y_POSITION + PlayerCannon.HEIGHT - VELOCITY_PIXELS_PER_FRAME;
     private static final int MISSED_SHOT_EXPLOSION_FRAMES = 10;
+    public static final BufferedImage SHOT_IMAGE = ImageResource.PLAYER_SHOT.getBufferedImage();
+    public static final BufferedImage SHOT_EXPLODING_IMAGE = ImageResource.PLAYER_SHOT_EXPLODING.getBufferedImage();
 
     private final CombatState combatState;
     private int x;
@@ -36,11 +40,11 @@ class PlayerShot implements Sprite {
     }
 
     @Override
-    public ImageResource getImageResource() {
+    public BufferedImage getBufferedImage() {
         if (shotState == IN_FLIGHT) {
-            return ImageResource.PLAYER_SHOT;
+            return SHOT_IMAGE;
         } else {
-            return ImageResource.PLAYER_SHOT_EXPLODING;
+            return SHOT_EXPLODING_IMAGE;
         }
     }
 
@@ -49,7 +53,7 @@ class PlayerShot implements Sprite {
             y += VELOCITY_PIXELS_PER_FRAME;
             if (y >= CombatState.TOP_Y_BOUNDARY) {
                 shotState = MISSED;
-                x = (int) (x - (ImageResource.PLAYER_SHOT_EXPLODING.getWidth() / 2.0));
+                x = (int) (x - (SHOT_EXPLODING_IMAGE.getWidth() / 2.0));
             }
         } else if (shotState == MISSED
                 && missedShotExplosionFrameCount++ == MISSED_SHOT_EXPLOSION_FRAMES)

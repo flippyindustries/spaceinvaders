@@ -1,5 +1,7 @@
 package com.alevat.spaceinvaders.io;
 
+import java.awt.image.BufferedImage;
+
 /**
  * A renderable independent game element.
  */
@@ -15,6 +17,6 @@ public interface Sprite {
      */
     int getY();
 
-    ImageResource getImageResource();
+    BufferedImage getBufferedImage();
 
 }
