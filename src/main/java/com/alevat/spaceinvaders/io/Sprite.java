@@ -1,5 +1,6 @@
 package com.alevat.spaceinvaders.io;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -20,6 +21,8 @@ public interface Sprite {
     int getWidth();
 
     int getHeight();
+
+    Rectangle getBounds();
 
     BufferedImage getBufferedImage();
 

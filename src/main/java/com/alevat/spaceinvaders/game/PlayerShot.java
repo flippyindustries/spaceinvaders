@@ -3,7 +3,6 @@ package com.alevat.spaceinvaders.game;
 import java.awt.image.BufferedImage;
 
 import com.alevat.spaceinvaders.io.ImageResource;
-import com.alevat.spaceinvaders.io.Sprite;
 
 import static com.alevat.spaceinvaders.game.PlayerShotState.IN_FLIGHT;
 import static com.alevat.spaceinvaders.game.PlayerShotState.MISSED;
@@ -68,7 +67,8 @@ class PlayerShot extends AbstractCombatSprite {
     private void handlePossibleCollision() {
         Collision collision = getCombatState().getCollision(this);
         if (collision != null) {
-
+            shotState = MISSED;
+            x = (int) (x - (SHOT_EXPLODING_IMAGE.getWidth() / 2.0));
         }
     }
 

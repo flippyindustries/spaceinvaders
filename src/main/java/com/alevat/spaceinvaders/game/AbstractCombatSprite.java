@@ -13,8 +13,16 @@ abstract class AbstractCombatSprite extends AbstractSprite implements CombatSpri
     }
 
     @Override
-    public boolean detectCollision(Sprite sprite) {
-        return false;
+    public boolean detectCollision(CombatSprite source) {
+        return detectBoundsOverlap(source) && detectPixelCollision(source);
+    }
+
+    private boolean detectBoundsOverlap(CombatSprite source) {
+        return getBounds().intersects(source.getBounds());
+    }
+
+    private boolean detectPixelCollision(CombatSprite source) {
+        return true;
     }
 
     CombatState getCombatState() {
