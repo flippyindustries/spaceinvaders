@@ -3,21 +3,17 @@ package com.alevat.spaceinvaders.game;
 import java.awt.image.BufferedImage;
 
 import com.alevat.spaceinvaders.io.ImageResource;
-import com.alevat.spaceinvaders.io.Sprite;
 
-import static com.alevat.spaceinvaders.game.PlayerShotState.IN_FLIGHT;
-
-class Shield implements Sprite {
+class Shield extends AbstractCombatSprite {
 
     static final int Y_POSITION = 56;
     static final int WIDTH = ImageResource.SHIELD.getWidth();
 
-    private final CombatState state;
     private final int x;
     private final BufferedImage image;
 
     Shield(CombatState state, int x) {
-        this.state = state;
+        super(state);
         this.x = x;
         this.image = ImageResource.SHIELD.copyBufferedImage();
     }

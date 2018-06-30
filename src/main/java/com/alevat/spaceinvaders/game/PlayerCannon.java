@@ -5,9 +5,8 @@ import java.awt.image.BufferedImage;
 import com.alevat.spaceinvaders.io.AudioEngine;
 import com.alevat.spaceinvaders.io.ImageResource;
 import com.alevat.spaceinvaders.io.SoundResource;
-import com.alevat.spaceinvaders.io.Sprite;
 
-class PlayerCannon implements Sprite {
+class PlayerCannon extends AbstractCombatSprite {
 
     private static final double VELOCITY_PIXELS_PER_FRAME = 1.0;
     private static final int STARTING_X_POSITION = 20;
@@ -17,13 +16,12 @@ class PlayerCannon implements Sprite {
     static final int BARREL_X_OFFSET = 6;
     public static final BufferedImage CANNON_IMAGE = ImageResource.PLAYER_CANNON.getBufferedImage();
 
-    private final CombatState state;
     private HorizontalDirection direction = HorizontalDirection.STILL;
 
     double x = STARTING_X_POSITION;
 
     PlayerCannon(CombatState state) {
-        this.state = state;
+        super(state);
     }
 
     public void update() {
@@ -61,8 +59,8 @@ class PlayerCannon implements Sprite {
     }
 
     void fire() {
-        if (state.getPlayerShot() == null) {
-            state.setPlayerShot(new PlayerShot(state, this));
+        if (getCombatState().getPlayerShot() == null) {
+            getCombatState().setPlayerShot(new PlayerShot(getCombatState(), this));
             getAudioEngine().play(SoundResource.FIRE_SHOT);
         }
     }
@@ -80,14 +78,6 @@ class PlayerCannon implements Sprite {
     @Override
     public BufferedImage getBufferedImage() {
         return CANNON_IMAGE;
-    }
-
-    private Console getConsole() {
-        return state.getConsole();
-    }
-
-    private AudioEngine getAudioEngine() {
-        return state.getGame().getIOResources().getAudioEngine();
     }
 
 }

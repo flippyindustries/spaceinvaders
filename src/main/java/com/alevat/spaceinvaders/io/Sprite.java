@@ -17,6 +17,10 @@ public interface Sprite {
      */
     int getY();
 
+    int getWidth();
+
+    int getHeight();
+
     BufferedImage getBufferedImage();
 
 }

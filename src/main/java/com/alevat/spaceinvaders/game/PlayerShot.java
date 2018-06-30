@@ -8,7 +8,7 @@ import com.alevat.spaceinvaders.io.Sprite;
 import static com.alevat.spaceinvaders.game.PlayerShotState.IN_FLIGHT;
 import static com.alevat.spaceinvaders.game.PlayerShotState.MISSED;
 
-class PlayerShot implements Sprite {
+class PlayerShot extends AbstractCombatSprite {
 
     private static final double VELOCITY_PIXELS_PER_FRAME = 4;
     private static final double STARTING_Y_POSITION =
@@ -17,16 +17,14 @@ class PlayerShot implements Sprite {
     public static final BufferedImage SHOT_IMAGE = ImageResource.PLAYER_SHOT.getBufferedImage();
     public static final BufferedImage SHOT_EXPLODING_IMAGE = ImageResource.PLAYER_SHOT_EXPLODING.getBufferedImage();
 
-    private final CombatState combatState;
     private int x;
     private double y = STARTING_Y_POSITION;
     private PlayerShotState shotState = IN_FLIGHT;
     private int missedShotExplosionFrameCount = 0;
 
     PlayerShot(CombatState combatState, PlayerCannon cannon) {
-        this.combatState = combatState;
+        super(combatState);
         this.x = cannon.getX() + PlayerCannon.BARREL_X_OFFSET;
-        combatState.getScreen().addSprite(this);
     }
 
     @Override
@@ -50,16 +48,27 @@ class PlayerShot implements Sprite {
 
     void update() {
         if (shotState == IN_FLIGHT) {
-            y += VELOCITY_PIXELS_PER_FRAME;
-            if (y >= CombatState.TOP_Y_BOUNDARY) {
-                shotState = MISSED;
-                x = (int) (x - (SHOT_EXPLODING_IMAGE.getWidth() / 2.0));
-            }
-        } else if (shotState == MISSED
-                && missedShotExplosionFrameCount++ == MISSED_SHOT_EXPLOSION_FRAMES)
+            move();
+            handlePossibleCollision();
+        } else if (shotState == MISSED && missedShotExplosionFrameCount++ == MISSED_SHOT_EXPLOSION_FRAMES)
         {
-            combatState.getScreen().removeSprite(this);
-            combatState.setPlayerShot(null);
+            getScreen().removeSprite(this);
+            getCombatState().setPlayerShot(null);
+        }
+    }
+
+    private void move() {
+        y += VELOCITY_PIXELS_PER_FRAME;
+        if (y >= CombatState.TOP_Y_BOUNDARY) {
+            shotState = MISSED;
+            x = (int) (x - (SHOT_EXPLODING_IMAGE.getWidth() / 2.0));
+        }
+    }
+
+    private void handlePossibleCollision() {
+        Collision collision = getCombatState().getCollision(this);
+        if (collision != null) {
+
         }
     }
 

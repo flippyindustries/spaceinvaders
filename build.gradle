@@ -8,6 +8,6 @@ repositories {
 mainClassName = 'com.alevat.spaceinvaders.Main'
 
 dependencies {
-
+    compile 'com.google.guava:guava:25.1-jre'
 }
 

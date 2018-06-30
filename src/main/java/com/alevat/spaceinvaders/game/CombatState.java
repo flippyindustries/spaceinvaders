@@ -1,7 +1,9 @@
 package com.alevat.spaceinvaders.game;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.alevat.spaceinvaders.io.InputListener;
 
@@ -28,7 +30,6 @@ class CombatState extends AbstractGameState {
     }
 
     private void initialize() {
-        getScreen().addSprite(playerCannon);
         initializeShields();
     }
 
@@ -37,7 +38,6 @@ class CombatState extends AbstractGameState {
         for (int i = 0; i < SHIELD_COUNT; i++) {
             Shield shield = new Shield(this, shieldX);
             shields.add(shield);
-            getScreen().addSprite(shield);
             shieldX += shield.WIDTH + SHIELD_SPACING;
         }
     }
@@ -65,6 +65,26 @@ class CombatState extends AbstractGameState {
 
     void setPlayerShot(PlayerShot playerShot) {
         this.playerShot = playerShot;
+    }
+
+    public Collision getCollision(CombatSprite source) {
+        for (CombatSprite target : getTargetSprites()) {
+            if (target == source) {
+                continue;
+            }
+            if (target.detectCollision(source)) {
+                return new Collision(source, target);
+            }
+        }
+        return null;
+    }
+
+    private Set<CombatSprite> getTargetSprites() {
+        Set<CombatSprite> targets = new HashSet<>();
+        targets.add(playerCannon);
+        targets.add(playerShot);
+        targets.addAll(shields);
+        return targets;
     }
 }
 
