@@ -7,7 +7,7 @@ import static java.lang.System.nanoTime;
 
 class GameLoop implements Runnable {
 
-    private final static int TARGET_FPS = 60;
+    private final static int TARGET_FPS = 6;
     private final static long TARGET_NANOSECONDS_PER_FRAME = TimeUnit.SECONDS.toNanos(1) / TARGET_FPS;
 
     private final Game game;

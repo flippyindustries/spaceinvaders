@@ -4,19 +4,19 @@ import com.alevat.spaceinvaders.io.Sprite;
 
 class Collision {
 
-    private final Sprite source;
-    private final Sprite target;
+    private final CombatSprite source;
+    private final CombatSprite target;
 
-    Collision(Sprite source, Sprite target) {
+    Collision(CombatSprite source, CombatSprite target) {
         this.source = source;
         this.target = target;
     }
 
-    Sprite getSource() {
+    CombatSprite getSource() {
         return source;
     }
 
-    Sprite getTarget() {
+    CombatSprite getTarget() {
         return target;
     }
 }
