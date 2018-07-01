@@ -7,7 +7,7 @@ import static java.lang.System.nanoTime;
 
 class GameLoop implements Runnable {
 
-    private final static int TARGET_FPS = 60;
+    private final static int TARGET_FPS = 6;
     private final static long TARGET_NANOSECONDS_PER_FRAME = TimeUnit.SECONDS.toNanos(1) / TARGET_FPS;
 
     private final Game game;
@@ -49,7 +49,10 @@ class GameLoop implements Runnable {
     private double getAverageFPS() {
         final long currentTimeNanos = nanoTime();
         final long durationNanos = currentTimeNanos - startTimeNanos;
-        return (double) frameCount / TimeUnit.NANOSECONDS.toSeconds(durationNanos);
+        double averageFPS = (double) frameCount / TimeUnit.NANOSECONDS.toSeconds(durationNanos);
+        frameCount = 0;
+        startTimeNanos = nanoTime();
+        return averageFPS;
     }
 
     private void update() {

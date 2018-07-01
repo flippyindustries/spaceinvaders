@@ -1,8 +1,6 @@
 package com.alevat.spaceinvaders.game;
 
-import com.alevat.spaceinvaders.io.AudioEngine;
 import com.alevat.spaceinvaders.io.InputOutputResources;
-import com.alevat.spaceinvaders.io.RenderingEngine;
 
 public class Game {
 
