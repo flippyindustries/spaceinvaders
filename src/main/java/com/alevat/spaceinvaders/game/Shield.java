@@ -33,4 +33,8 @@ class Shield extends AbstractCombatSprite {
         return image;
     }
 
+    @Override
+    public void handleShotCollision(PlayerShot playerShot) {
+        playerShot.handleShieldCollision(this);
+    }
 }

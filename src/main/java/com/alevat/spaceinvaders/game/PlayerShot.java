@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import com.alevat.spaceinvaders.io.ImageResource;
 
+import static com.alevat.spaceinvaders.game.PlayerShotState.HIT_SHIELD;
 import static com.alevat.spaceinvaders.game.PlayerShotState.IN_FLIGHT;
 import static com.alevat.spaceinvaders.game.PlayerShotState.MISSED;
 
@@ -12,14 +13,15 @@ class PlayerShot extends AbstractCombatSprite {
     private static final double VELOCITY_PIXELS_PER_FRAME = 4;
     private static final double STARTING_Y_POSITION =
             PlayerCannon.Y_POSITION + PlayerCannon.HEIGHT - VELOCITY_PIXELS_PER_FRAME;
-    private static final int MISSED_SHOT_EXPLOSION_FRAMES = 10;
-    public static final BufferedImage SHOT_IMAGE = ImageResource.PLAYER_SHOT.getBufferedImage();
-    public static final BufferedImage SHOT_EXPLODING_IMAGE = ImageResource.PLAYER_SHOT_EXPLODING.getBufferedImage();
+    private static final int EXPLOSION_FRAMES = 10;
+
+    public static final BufferedImage IMAGE = ImageResource.PLAYER_SHOT.getBufferedImage();
+    public static final BufferedImage EXPLODING_IMAGE = ImageResource.PLAYER_SHOT_EXPLODING.getBufferedImage();
 
     private int x;
     private double y = STARTING_Y_POSITION;
-    private PlayerShotState shotState = IN_FLIGHT;
-    private int missedShotExplosionFrameCount = 0;
+    private PlayerShotState state = IN_FLIGHT;
+    private int currentStateFrameCount = 0;
 
     PlayerShot(CombatState combatState, PlayerCannon cannon) {
         super(combatState);
@@ -38,38 +40,58 @@ class PlayerShot extends AbstractCombatSprite {
 
     @Override
     public BufferedImage getBufferedImage() {
-        if (shotState == IN_FLIGHT) {
-            return SHOT_IMAGE;
+        if (state == IN_FLIGHT) {
+            return IMAGE;
         } else {
-            return SHOT_EXPLODING_IMAGE;
+            return EXPLODING_IMAGE;
         }
     }
 
     void update() {
-        if (shotState == IN_FLIGHT) {
-            move();
-            handlePossibleCollision();
-        } else if (shotState == MISSED && missedShotExplosionFrameCount++ == MISSED_SHOT_EXPLOSION_FRAMES)
-        {
-            getScreen().removeSprite(this);
-            getCombatState().setPlayerShot(null);
+        switch (state) {
+            case IN_FLIGHT:
+                move();
+                break;
+            case HIT_SHIELD:
+                handleExploding();
+                break;
+            case MISSED:
+                handleExploding();
+                break;
+            default:
+                throw new IllegalStateException("State not handled " + state);
         }
     }
 
     private void move() {
         y += VELOCITY_PIXELS_PER_FRAME;
         if (y >= CombatState.TOP_Y_BOUNDARY) {
-            shotState = MISSED;
-            x = (int) (x - (SHOT_EXPLODING_IMAGE.getWidth() / 2.0));
+            miss();
         }
+        handlePossibleCollision();
+    }
+
+    private void miss() {
+        state = MISSED;
+        x = (int) (x - (EXPLODING_IMAGE.getWidth() / 2.0));
     }
 
     private void handlePossibleCollision() {
         Collision collision = getCombatState().getCollision(this);
         if (collision != null) {
-            shotState = MISSED;
-            x = (int) (x - (SHOT_EXPLODING_IMAGE.getWidth() / 2.0));
+            collision.getTarget().handleShotCollision(this);
         }
+    }
+
+    private void handleExploding() {
+        if (currentStateFrameCount++ == EXPLOSION_FRAMES) {
+            getScreen().removeSprite(this);
+            getCombatState().setPlayerShot(null);
+        }
+    }
+
+    public void handleShieldCollision(Shield shield) {
+        state = HIT_SHIELD;
     }
 
 }

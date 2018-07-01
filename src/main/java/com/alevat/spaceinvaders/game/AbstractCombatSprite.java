@@ -1,7 +1,6 @@
 package com.alevat.spaceinvaders.game;
 
 import com.alevat.spaceinvaders.io.AudioEngine;
-import com.alevat.spaceinvaders.io.Sprite;
 
 abstract class AbstractCombatSprite extends AbstractSprite implements CombatSprite {
 
@@ -39,6 +38,16 @@ abstract class AbstractCombatSprite extends AbstractSprite implements CombatSpri
 
     AudioEngine getAudioEngine() {
         return getCombatState().getGame().getIOResources().getAudioEngine();
+    }
+
+    @Override
+    public void handleShotCollision(PlayerShot playerShot) {
+        handleIllegalCollision(playerShot); // default, override where allowed
+    }
+
+    private void handleIllegalCollision(CombatSprite sprite) {
+        throw new UnsupportedOperationException("Illegal collision between " + getClass().getSimpleName()
+                + " + and " + sprite.getClass().getSimpleName());
     }
 
 }

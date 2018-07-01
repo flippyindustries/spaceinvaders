@@ -20,7 +20,7 @@ class JavaAWTRenderingEngine implements RenderingEngine {
 
     private final Console console;
     private GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    private GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
+    private GraphicsDevice graphicsDevice = graphicsEnvironment.getScreenDevices()[0];
     private Frame window;
 
     private final Set<Sprite> sprites = new HashSet<>();
